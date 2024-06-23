@@ -14,12 +14,22 @@ const AccountModel = require('../models/AccountModel');
 
 //测试
 // console.log(moment('2024-06-23').toDate())
+//格式化日期对象
+// console.log(moment(new Date()).format('YYYY-MM-DD'));
 
 //记账本的列表
 router.get('/account', function(req, res, next) {
   //获取所有账单信息
-  let accounts = db.get('accounts').value();
-  res.render('list', {accounts: accounts});
+  // let accounts = db.get('accounts').value();
+  //读取集合信息
+  AccountModel.find().sort({time: -1}).exec().then((data) => {
+    console.log(data);
+    //响应成功的提示
+    res.render('list', {accounts: data, moment: moment});
+  }).catch((err) => {
+    res.status(500).send('读取失败~~~');
+    return;
+  })
 });
 
 router.get('/account/create', function(req, res, next) {
