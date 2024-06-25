@@ -38,12 +38,6 @@ router.get('/account/create', function(req, res, next) {
 
 //新增记录
 router.post('/account', (req, res) => {
-  //查看表单数据 2024-06-23 => new Date()
-  // 2024-06-23 => moment => new Date()
-  // console.log(req.body);
-  //修改req.body.time的值
-  // console.log(req.body.time); //'2024-06-23'
-  // req.body.time = moment(req.body.time).toDate()
   //插入数据库
   AccountModel.create({
     ...req.body,
@@ -64,9 +58,13 @@ router.get('/account/:id', (req, res) => {
   //获取params的id参数
   let id = req.params.id;
   //删除
-  db.get('accounts').remove({id:id}).write();
-  //提醒
-  res.render('success', {msg: '删除成功哦~~~', url: '/account'});
+  AccountModel.deleteOne({_id: id}).then(() => {
+    //提醒
+    res.render('success', {msg: '删除成功哦~~~', url: '/account'});
+  }).catch((err) => {
+    res.status(500).send('删除失败~');
+    return;
+  });
 })
 
 module.exports = router;
