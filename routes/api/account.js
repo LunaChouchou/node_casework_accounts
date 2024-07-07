@@ -59,15 +59,24 @@ router.post('/account', (req, res) => {
 })
 
 //删除记录
-router.get('/account/:id', (req, res) => {
+router.delete('/account/:id', (req, res) => {
   //获取params的id参数
   let id = req.params.id;
   //删除
   AccountModel.deleteOne({_id: id}).then(() => {
     //提醒
-    res.render('success', {msg: '删除成功哦~~~', url: '/account'});
+    //成功提醒
+    res.json({
+      code:  '0000',
+      msg: '删除成功',
+      data: {}
+    });
   }).catch((err) => {
-    res.status(500).send('删除失败~');
+    res.json({
+      code:  '1003',
+      msg: '删除账单失败',
+      data: null
+    })
     return;
   });
 })
