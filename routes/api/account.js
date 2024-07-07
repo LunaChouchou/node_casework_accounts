@@ -101,4 +101,34 @@ router.get('/account/:id', (req, res) => {
   });
 })
 
+//TODO: 使用promise避免回调地狱
+//更新单个账单信息
+router.patch('/account/:id', (req, res) => {
+  //获取id参数值
+  let {id} = req.params;
+  //更新数据库
+  AccountModel.updateOne({_id: id}, req.body).then(() => {
+    //再次查询数据库 获取单条数据
+    AccountModel.findById(id).then((data) => {
+      res.json({
+        code:  '0000',
+        msg: '更新成功',
+        data: data
+      });
+    }).catch((err) => {
+      res.json({
+        code:  '1004',
+        msg: '读取失败~~',
+        data: null
+      })
+    });
+  }).catch((err) => {
+    res.json({
+      code:  '1005',
+      msg: '更新失败~~',
+      data: null
+    })
+  });
+})
+
 module.exports = router;
