@@ -30,23 +30,30 @@ router.get('/account', function(req, res, next) {
   })
 });
 
-router.get('/account/create', function(req, res, next) {
-  res.render('create')
-});
-
 //新增记录
 router.post('/account', (req, res) => {
+  // TODO: 表单验证
   //插入数据库
   AccountModel.create({
     ...req.body,
     //修改 time 属性的值
     time: moment(req.body.time).toDate()
-  }).then(() => {
+  }).then((data) => {
     //成功提醒
-    res.render('success', {msg: '添加成功哦~~~', url: '/account'});
+    res.json({
+      //响应编号
+      code:  '0000',
+      //响应的信息
+      msg: '创建成功',
+      //响应的数据
+      data: data
+    });
   }).catch((err) => {
-    res.status(500).send('插入失败~~~');
-    console.log(err);
+    res.json({
+      code:  '1002',
+      msg: '创建失败~~',
+      data: null
+    })
     return;
   })
 })
