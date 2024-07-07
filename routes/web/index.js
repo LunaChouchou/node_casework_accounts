@@ -1,21 +1,8 @@
 var express = require('express');
 var router = express.Router();
-//导入lowdb
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync(__dirname + '/../data/db.json')
-//获取db对象
-const db = low(adapter)
-//导入shortid
-const shortid = require('shortid');
 //导入 moment
 const moment = require('moment');
-const AccountModel = require('../models/AccountModel');
-
-//测试
-// console.log(moment('2024-06-23').toDate())
-//格式化日期对象
-// console.log(moment(new Date()).format('YYYY-MM-DD'));
+const AccountModel = require('../../models/AccountModel');
 
 //记账本的列表
 router.get('/account', function(req, res, next) {
