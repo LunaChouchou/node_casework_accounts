@@ -81,4 +81,24 @@ router.delete('/account/:id', (req, res) => {
   });
 })
 
+//获取单个账单信息
+router.get('/account/:id', (req, res) => {
+  //获取id参数
+  let {id} = req.params;
+  //查询数据库
+  AccountModel.findById(id).then((data) => {
+    res.json({
+      code:  '0000',
+      msg: '读取成功',
+      data: data
+    });
+  }).catch((err) => {
+    res.json({
+      code:  '1004',
+      msg: '读取单条失败~~',
+      data: null
+    })
+  });
+})
+
 module.exports = router;
