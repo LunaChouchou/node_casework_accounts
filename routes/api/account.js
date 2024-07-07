@@ -12,9 +12,20 @@ router.get('/account', function(req, res, next) {
   AccountModel.find().sort({time: -1}).exec().then((data) => {
     console.log(data);
     //响应成功的提示
-    res.render('list', {accounts: data, moment: moment});
+    res.json({
+      //响应编号
+      code:  '0000',
+      //响应的信息
+      msg: '读取成功',
+      //响应的数据
+      data: data
+    });
   }).catch((err) => {
-    res.status(500).send('读取失败~~~');
+    res.json({
+      code: '1001',
+      msg: '读取失败~~',
+      data: null
+    })
     return;
   })
 });
