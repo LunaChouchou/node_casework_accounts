@@ -4,8 +4,11 @@ var router = express.Router();
 const moment = require('moment');
 const AccountModel = require('../../models/AccountModel');
 
+//导入中间件检测登录
+let checkLoginMiddleware = require('../../middlewares/checkLoginMiddleware');
+
 //记账本的列表
-router.get('/account', function(req, res, next) {
+router.get('/account', checkLoginMiddleware, function(req, res, next) {
   //获取所有账单信息
   // let accounts = db.get('accounts').value();
   //读取集合信息
@@ -19,7 +22,7 @@ router.get('/account', function(req, res, next) {
   })
 });
 
-router.get('/account/create', function(req, res, next) {
+router.get('/account/create', checkLoginMiddleware, function(req, res, next) {
   res.render('create')
 });
 
@@ -41,7 +44,7 @@ router.post('/account', (req, res) => {
 })
 
 //删除记录
-router.get('/account/:id', (req, res) => {
+router.get('/account/:id', checkLoginMiddleware, (req, res) => {
   //获取params的id参数
   let id = req.params.id;
   //删除

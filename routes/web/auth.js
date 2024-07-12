@@ -41,7 +41,7 @@ router.post('/login', (req, res) => {
     }
     //写入session
     req.session.username = data.username;
-    req.session._id = data._id;
+    req.session._id = data._id; //当前session文档里的id 不是sid
 
     //登录成功响应
     res.render('success', {msg: '登录成功', url: '/account'});
