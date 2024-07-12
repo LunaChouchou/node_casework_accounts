@@ -35,10 +35,14 @@ router.post('/login', (req, res) => {
   //查询数据库
   UserModel.findOne({username: username, password: md5(password)}).then((data) => {
     console.log(data);
-    //判断的ata
+    //判断data
     if(!data){
         return res.send('账号或密码错误~~');
     }
+    //写入session
+    req.session.username = data.username;
+    req.session._id = data._id;
+
     //登录成功响应
     res.render('success', {msg: '登录成功', url: '/account'});
   }).catch((err) => {
