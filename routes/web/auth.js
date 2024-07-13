@@ -51,5 +51,13 @@ router.post('/login', (req, res) => {
   });
 })
 
+//退出登录
+router.get('/logout', (req, res) => {
+  //销毁session
+  req.session.destroy(() => {
+    res.render('success', {msg: '退出成功', url:'/login'}) 
+  })
+})
+
 
 module.exports = router;
