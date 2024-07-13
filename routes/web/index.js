@@ -1,11 +1,21 @@
-var express = require('express');
-var router = express.Router();
+//导入 express
+const express = require('express');
 //导入 moment
 const moment = require('moment');
 const AccountModel = require('../../models/AccountModel');
 
 //导入中间件检测登录
-let checkLoginMiddleware = require('../../middlewares/checkLoginMiddleware');
+const checkLoginMiddleware = require('../../middlewares/checkLoginMiddleware');
+
+//创建路由对象
+const router = express.Router();
+
+
+//添加首页路由规则
+router.get('/', (req, res) => {
+  //重定向
+  res.redirect('/account');
+})
 
 //记账本的列表
 router.get('/account', checkLoginMiddleware, function(req, res, next) {
