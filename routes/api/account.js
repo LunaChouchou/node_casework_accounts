@@ -1,37 +1,44 @@
-var express = require('express');
-var router = express.Router();
+//导入express
+const express = require('express');
+//导入jwt
+const jwt = require('jsonwebtoken');
+//导入中间件
+let checkTokenMiddleware = require('../../middlewares/checkTokenMiddleware');
+
+const router = express.Router();
 //导入 moment
 const moment = require('moment');
 const AccountModel = require('../../models/AccountModel');
 
+
 //记账本的列表
-router.get('/account', function(req, res, next) {
-  //获取所有账单信息
-  // let accounts = db.get('accounts').value();
-  //读取集合信息
-  AccountModel.find().sort({time: -1}).exec().then((data) => {
-    console.log(data);
-    //响应成功的提示
-    res.json({
-      //响应编号
-      code:  '0000',
-      //响应的信息
-      msg: '读取成功',
-      //响应的数据
-      data: data
-    });
-  }).catch((err) => {
-    res.json({
-      code: '1001',
-      msg: '读取失败~~',
-      data: null
+router.get('/account', checkTokenMiddleware, function(req, res, next) {
+    //获取所有账单信息
+    // let accounts = db.get('accounts').value();
+    //读取集合信息
+    AccountModel.find().sort({time: -1}).exec().then((data) => {
+      console.log(data);
+      //响应成功的提示
+      res.json({
+        //响应编号
+        code:  '0000',
+        //响应的信息
+        msg: '读取成功',
+        //响应的数据
+        data: data
+      });
+    }).catch((err) => {
+      res.json({
+        code: '1001',
+        msg: '读取失败~~',
+        data: null
+      })
+      return;
     })
-    return;
-  })
 });
 
 //新增记录
-router.post('/account', (req, res) => {
+router.post('/account', checkTokenMiddleware, (req, res) => {
   // TODO: 表单验证
   //插入数据库
   AccountModel.create({
@@ -59,7 +66,7 @@ router.post('/account', (req, res) => {
 })
 
 //删除记录
-router.delete('/account/:id', (req, res) => {
+router.delete('/account/:id', checkTokenMiddleware, (req, res) => {
   //获取params的id参数
   let id = req.params.id;
   //删除
@@ -82,7 +89,7 @@ router.delete('/account/:id', (req, res) => {
 })
 
 //获取单个账单信息
-router.get('/account/:id', (req, res) => {
+router.get('/account/:id', checkTokenMiddleware, (req, res) => {
   //获取id参数
   let {id} = req.params;
   //查询数据库
@@ -103,7 +110,7 @@ router.get('/account/:id', (req, res) => {
 
 //TODO: 使用promise避免回调地狱
 //更新单个账单信息
-router.patch('/account/:id', (req, res) => {
+router.patch('/account/:id', checkTokenMiddleware, (req, res) => {
   //获取id参数值
   let {id} = req.params;
   //更新数据库
