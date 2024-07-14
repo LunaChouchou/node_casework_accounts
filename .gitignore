@@ -39,3 +39,6 @@ build/
 *.mp4
 *.zip
 *.exe
+
+# 测试用文件
+/public/upload
