@@ -1,5 +1,7 @@
 //导入 jwt
 const jwt = require('jsonwebtoken');
+//读取配置项
+const {secret} = require('../config/config');
 
 //声明中间件
 module.exports = (req, res, next) => {
@@ -14,7 +16,7 @@ module.exports = (req, res, next) => {
     })
   }
   //校验token
-  jwt.verify(token, 'atguigu', (err, data) => {
+  jwt.verify(token, secret, (err, data) => {
     //检测token是否正确
     if(err){
       return res.json({
@@ -23,6 +25,8 @@ module.exports = (req, res, next) => {
         data: null
       })
     }
+    //保存用户的信息
+    req.user = data;
     //如果token校验成功
     next();
   });

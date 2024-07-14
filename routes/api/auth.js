@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 //导入jwt
 const jwt = require('jsonwebtoken');
+//读取配置项
+const {secret} = require('../../config/config');
 //导入 用户的模型
 const UserModel = require('../../models/UserModel');
 const md5 = require('md5');
@@ -25,7 +27,7 @@ router.post('/login', (req, res) => {
     let token = jwt.sign({
         username: data.username,
         _id: data._id
-    }, 'atguigu', {
+    }, secret, {
         expiresIn: 60 * 60 * 24 * 7
     })
     //响应token

@@ -1,7 +1,5 @@
 //导入express
 const express = require('express');
-//导入jwt
-const jwt = require('jsonwebtoken');
 //导入中间件
 let checkTokenMiddleware = require('../../middlewares/checkTokenMiddleware');
 
@@ -13,11 +11,12 @@ const AccountModel = require('../../models/AccountModel');
 
 //记账本的列表
 router.get('/account', checkTokenMiddleware, function(req, res, next) {
+  console.log(req.user);
     //获取所有账单信息
     // let accounts = db.get('accounts').value();
     //读取集合信息
     AccountModel.find().sort({time: -1}).exec().then((data) => {
-      console.log(data);
+      // console.log(data);
       //响应成功的提示
       res.json({
         //响应编号
